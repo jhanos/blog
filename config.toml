@@ -1,7 +1,56 @@
-baseURL = "https://example.org/"
+baseURL = "https://www.thonis.eu/"
 languageCode = "en-us"
 title = "Jhanos Blog"
 theme = "loveit"
+defaultContentLanguage = "en"
+enableEmoji = true
+
+# Menu config
+# 菜单配置
+[menu]
+  [[menu.main]]
+    weight = 1
+    identifier = "posts"
+    # you can add extra information before the name (HTML format is supported), such as icons
+    pre = ""
+    # you can add extra information after the name (HTML format is supported), such as icons
+    post = ""
+    name = "Posts"
+    url = "/posts/"
+    # title will be shown when you hover on this menu link
+    title = ""
+  [[menu.main]]
+    weight = 2
+    identifier = "tags"
+    pre = ""
+    post = ""
+    name = "Tags"
+    url = "/tags/"
+    title = ""
+  [[menu.main]]
+    weight = 3
+    identifier = "categories"
+    pre = ""
+    post = ""
+    name = "Categories"
+    url = "/categories/"
+    title = ""
+#  [[menu.main]]
+#    weight = 4
+#    identifier = "about"
+#    pre = ""
+#    post = ""
+#    name = "About"
+#    url = "/pages/about/"
+#    title = ""
+  [[menu.main]]
+    weight = 5
+    identifier = "github"
+    pre = "<i class='fab fa-github fa-fw' aria-hidden='true'></i>"
+    post = ""
+    name = ""
+    url = "https://github.com/jhanos/blog"
+    title = ""
 
 [module]
   [module.hugoVersion]
@@ -12,7 +61,7 @@ theme = "loveit"
   # site default theme ["auto", "light", "dark"]
   defaultTheme = "auto"
   # public git repo url only then enableGitInfo is true
-  gitRepo = ""
+  gitRepo = "https://github.com/jhanos/blog"
   # which hash function used for SRI, when empty, no SRI is used
   # ["sha256", "sha384", "sha512", "md5"]
   fingerprint = ""
@@ -27,7 +76,7 @@ theme = "loveit"
 
   # Header config
   [params.header]
-    # desktop header mode ["fixed", "normal", "auto"]
+    # desktop header modehttps://github.com/jhanos/blog ["fixed", "normal", "auto"]
     desktopMode = "fixed"
     # mobile header mode ["fixed", "normal", "auto"]
     mobileMode = "auto"
@@ -38,7 +87,7 @@ theme = "loveit"
       logo = ""
       # title name
       # 标题名称
-      name = "Jhanos"
+      name = "Le blog de Jhanos"
       # you can add extra information before the name (HTML format is supported), such as icons
       pre = ""
       # you can add extra information after the name (HTML format is supported), such as icons
@@ -72,7 +121,7 @@ theme = "loveit"
   # App icon config
   [params.app]
     # optional site title override for the app when added to an iOS home screen or Android launcher
-    title = "Jhanos"
+    title = "Le blog de Jhanos"
     # whether to omit favicon resource links
     noFavicon = false
     # modern SVG favicon to use in place of older style .png and .ico files
@@ -86,7 +135,7 @@ theme = "loveit"
 
   # Search config
   [params.search]
-    enable = false
+    enable = true
     # type of search engine ["lunr", "algolia"]
     type = "lunr"
     # max index length of the chunked content
@@ -134,8 +183,8 @@ theme = "loveit"
       paginate = 6
   # Social config in home page
   [params.social]
-    GitHub = ""
-    Linkedin = ""
+    GitHub = "jhanos"
+    Linkedin = "thomas-langlois-ab87bb78"
     Twitter = ""
     Instagram = ""
     Facebook = ""
@@ -208,7 +257,7 @@ theme = "loveit"
     RootMe= ""
     Email = ""
     Phone = ""
-    RSS = ""
+    RSS = "/index.xml"
 
   # Page global config
   [params.page]
@@ -279,8 +328,8 @@ theme = "loveit"
     [params.page.share]
       enable = true
       Twitter = true
-      Facebook = true
-      Linkedin = false
+      Facebook = false
+      Linkedin = true
       Whatsapp = false
       Pinterest = false
       Tumblr = false
@@ -289,11 +338,11 @@ theme = "loveit"
       VK = false
       Buffer = false
       Xing = false
-      Line = true
+      Line = false
       Instapaper = false
       Pocket = false
       Flipboard = false
-      Weibo = true
+      Weibo = false
       Blogger = false
       Baidu = false
       Odnoklassniki = false

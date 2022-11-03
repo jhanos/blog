@@ -1,10 +1,15 @@
 ---
-title: "Ansible-rulebook, déclencher ansible sur des évenements"
+title: "Ansible-rulebook, déclencher ansible sur des événements"
 date: 2022-10-26T11:24:09+02:00
 draft: false
 author: Jhanos
 featuredImage: ansible.png
 publishDate: 2022-10-27
+categories:
+- Automation
+tags:
+- ansible
+- automation
 
 ---
 
@@ -15,14 +20,14 @@ publishDate: 2022-10-27
 Ansible-rulebook a été une des grosses annonces de la [Ansible Fest 2022](https://www.ansible.com/ansiblefest).
 
 Ce nouvel outil permet de **déclencher des actions** ansible en se basant sur des **événements**, tel que:
-- Executer un playbook à la reception d'un webhook. 
-- Executer un playbook quand un fichier est modifié
-- Définir un nouveau fact quand on recoit un message dans un bus Kafka
+- Exécuter un playbook à la réception d'un webhook. 
+- Exécuter un playbook quand un fichier est modifié
+- Définir un nouveau fact quand on reçoit un message dans un bus Kafka
 
 Les rulebook sont décomposés en trois parties:
-- Les **sources**, cela corresponds à une pour plusieurs sources d'evenement sur lequel ansible doit écouter (exemple: un bus kafka, un webhook, un fichier pour detecter une modification) 
-- Les **rules**, cela corresponds à une combinaison de condition(s) (exemple: si le message kafka contient "trigger" ou alors si le webhook recoit le message "deploy my app")
-- Les **actions**, cela corresponds à un playbook (une liste d'actions par exemple) à executer si la condition est remplie.
+- Les **sources**, cela correspond à une pour plusieurs sources d'événement sur lequel ansible doit écouter (exemple: un bus kafka, un webhook, un fichier pour detecter une modification) 
+- Les **conditions**, cela correspond à une des modalités nécessaire pour le déclenchement des actions (exemple: si le message kafka contient "trigger" ou alors si le webhook reçoit le message "deploy my app")
+- Les **actions**, cela correspond à une ou plusieurs actions (par exemple un playbook) à éxecuter si la condition est remplie.
 
 Il est bien entendu possible de coder son propre déclencheur en python très facilement, les possibilités sont donc immenses.
 
@@ -228,10 +233,12 @@ Voici les actions possibles:
         port: 8000
   rules:
     - name: Say Hello
-      condition: event.payload.message == "Deploy my app"
+      condition: event.payload.message == "Remediation1"
       action:
         run_playbook:
-          name: ansible.eda.hello
+          name: myplaybook
 ```
 
 ### Multiple sources
+
+### Use parameters inside the playbook
