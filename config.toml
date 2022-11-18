@@ -1,4 +1,4 @@
-baseURL = "https://www.thonis.eu/"
+baseURL = "https://www.thonis.fr/"
 languageCode = "en-us"
 title = "Jhanos Blog"
 theme = "loveit"
@@ -185,7 +185,7 @@ enableEmoji = true
   [params.social]
     GitHub = "jhanos"
     Linkedin = "thomas-langlois-ab87bb78"
-    Twitter = ""
+    Twitter = "jhanosl"
     Instagram = ""
     Facebook = ""
     Telegram = ""
