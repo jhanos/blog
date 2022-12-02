@@ -528,7 +528,7 @@ enableEmoji = true
     # you can store your own data files in the same path under your project:
     # "assets/data/cdn/"
     # ["jsdelivr.yml"]
-    data = "jsdelivr.yml"
+    data = "jsdelivrtesting.yml"
 
   # Compatibility config
   [params.compatibility]

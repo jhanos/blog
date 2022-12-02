@@ -1,0 +1,13 @@
+- 12 favorites terminal tools (fzf, bat, nvim, toipe (text typing), asciinema, httpie, ripgrep, tldr, z, jq/yq/htmlq,  )
+- how to create a blog with hugo
+- argocd
+- flux
+- rancher desktop
+- neuvector
+- renovate
+- stackrox
+- kata container
+- gvisor
+- molecule v4
+- ebpf
+- kepler

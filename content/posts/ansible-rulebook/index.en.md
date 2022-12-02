@@ -1,5 +1,5 @@
 ---
-title: "Ansible-rulebook, comment déclencher ansible sur des événements"
+title: "Ansible-rulebook, How to trigger ansible on events"
 date: 2022-10-26T11:24:09+02:00
 draft: false
 author: Jhanos
@@ -10,40 +10,40 @@ categories:
 tags:
 - ansible
 - automation
-summary: Les apports d'ansible-rulebook et comment l'utiliser.
+summary: The pros and cons for ansible-rulebook and How to use it.
 
 ---
 
 # Ansible-rulebook
 
-## 1. Version Condensée
+## 1. Short Version
 
-Ansible-rulebook a été une des grosses annonces de la [Ansible Fest 2022](https://www.ansible.com/ansiblefest).
+Ansible-rulebook was one of the big announcement in the [Ansible Fest 2022](https://www.ansible.com/ansiblefest).
 
-Ce nouvel outil permet de **déclencher des actions** ansible en se basant sur des **événements**, tel que:
-- Exécuter un playbook à la réception d'un webhook. 
-- Exécuter un playbook quand un fichier est modifié
-- Définir un nouveau fact quand on reçoit un message dans un bus Kafka
+This new tool allow to **trigger ansible actions** based on events:
+- Launch a playbook when a webhook is triggered
+- Launch a playbook when a file is changed
+- Definie a new fact when a message is receive in a kafka topic
 
-Les rulebook sont décomposés en trois parties:
-- Les **sources**, cela correspond à une pour plusieurs sources d'événement sur lequel ansible doit écouter (exemple: un bus kafka, un webhook, un fichier pour detecter une modification) 
-- Les **conditions**, cela correspond à une des modalités nécessaire pour le déclenchement des actions (exemple: si le message kafka contient "trigger" ou alors si le webhook reçoit le message "deploy my app")
-- Les **actions**, cela correspond à une ou plusieurs actions (par exemple un playbook) à éxecuter si la condition est remplie.
+The rukebook are split in three parts:
+- **sources**, one or multiple event's sources to listen (example: a kafka's topic, a webhook, a file ) 
+- **conditions**, a condition to reach to trigger an action (example: webhook message contains 'hello')
+- **actions**, an action to execute (example: launch a playbook, set a fact, ...)
 
-Il est bien entendu possible de coder son propre déclencheur en python très facilement, les possibilités sont donc immenses.
+It's possible to create your own source in python easily, so it leads to a lots of possibility.
 
-L'outil a par contre quelques dépendances qui pourraient complexifier son utilisation: 
-- ansible-runner, qui sert à executer les playbook
-- java et jpy sont utilisés pour le moteur de règles
-- Et évidemment les librairies python utilisée dans les scripts python pour les **sources**
+However, ansible-rulebook has some uncommon requirements:
+- ansible-runner, used to launch the playbook
+- java and jpy used as rules engine
+- And of course all python library used in the **sources**
 
-L'outil est disponible sur Github [Ansible rulebook](https://github.com/ansible/ansible-rulebook) et sa documentation est [ici](https://github.com/ansible/ansible-rulebook).
+The tool is available on Github [Ansible rulebook](https://github.com/ansible/ansible-rulebook) and its documentation is  [here](https://github.com/ansible/ansible-rulebook).
 
-## 2. Version Longue
-### Installation
+## 2. Long Version
+### Install
 
 
-Il faut quelques prérequis pour installer ansible-rulebook. (mes tests sont faits sur une machine ubuntu) :
+ansible-rulebook need some prerequisites (my tests are done on ubuntu)
 
 ```bash
 sudo apt install openjdk-17-jdk python3-dev python3-pip
@@ -54,28 +54,28 @@ pip install wheel ansible-rulebook ansible ansible-runner aiohttp
 ansible-galaxy collection install community.general ansible.eda
 ```
 
-Voici le détail des prérequis:
-- java et jpy ([a Python-Java Bridge](https://github.com/bcdev/jpy)) sont utilisés pour le moteur de règles.
-- ansible et ansible-runner servent pour l'execution des playbook
-- ansible-rulebook est l'outil en lui-même
-- aiohttp ([Asynchronous HTTP Client/Server for asyncio and python](https://docs.aiohttp.org/en/stable/) est utilisé dans les scripts python de sources comme le webhook)
-- Et ensuite deux collections ansible community.general ([la collection de base dans ansible](https://github.com/ansible-collections/community.general)) et [ansible.eda](https://github.com/ansible/event-driven-ansible) (Event Driven Ansible) qui est la collection specifique aux évenements et qui contient les plugins de sources et d'actions.
+Requirements details:
+- java and jpy ([a Python-Java Bridge](https://github.com/bcdev/jpy)) for the engine rules.
+- ansible and ansible-runner for the playbook execution
+- ansible-rulebook the main tool
+- aiohttp ([Asynchronous HTTP Client/Server for asyncio and python](https://docs.aiohttp.org/en/stable/) ), used in official sources like 'webhook'
+- And then 2 collections community.general ([based ansible collection](https://github.com/ansible-collections/community.general)) and [ansible.eda](https://github.com/ansible/event-driven-ansible) (Event Driven Ansible) which is the collection with sources' plugins and actions.
 
 
-Voici les versions des composants installés:
+Current versions for this test:
 - python 3.8.10
 - openjdk version 17.0.5
 - ansible-rulebook 0.9.4
 - ansible-runner 2.2.1
 - ansible 2.13.5
 
-### Utilisation Basique
+### Basic usage
 
-Pour utliser **ansible-rulebook**, il faut au préalable avoir crée deux fichiers:
-- inventory.yaml (un inventaire ansible au format yaml)
-- le fichier rulebook.yml qui contiendra nos regles (sources + conditions + actions)
+**ansible-rulebook** needs two files to work:
+- inventory.yaml (an ansible inventory in yaml)
+- rulebook.yml ( a file with our rules (sources + conditions + actions)
 
-Prenons un inventaire qui ne contient que notre propre machine
+We use localhost as inventory:
 ```yaml
 all:
   hosts:
@@ -83,7 +83,7 @@ all:
       ansible_connection: local
 ```
 
-Prenons le rulebook exemple qui est présenté dans la documentation:
+And for this example, we take the rulebook inside the documentation
 ```yaml
 - name: Hello Events
   hosts: localhost
@@ -98,12 +98,12 @@ Prenons le rulebook exemple qui est présenté dans la documentation:
           name: ansible.eda.hello
 ```
 
-Son fonctionnement est simple:
-- la source: il itère de 1 à 5 
-- la condition: si la valeur est 1
-- l'action: il affiche hello
+With explanation:
+- source: iterate from 1 to 5 
+- condition: if the value is 1
+- action: print hello
 
-Pour l'executer, il faut faire:
+In order to use it, we just have to launch:
 ```bash
 ❯ ansible-rulebook -i inventory.yml --rulebook basic-rulebook.yml --verbose
 INFO:ansible_rulebook.app:Starting sources
@@ -136,8 +136,8 @@ INFO:ansible_rulebook.app:Cancelling event source tasks
 INFO:ansible_rulebook.app:Main complete
 ```
 {{< admonition note >}}
-Dans notre cas, *ansible-rulebook* s'arrète, car le script en source est fini.   
-Dans les cas plus classiques comme le webhook, il ne s'arrête pas sauf si on lui demande.
+In this case, *ansible-rulebook* stop, because the source finish.   
+In common case, it runs forever except if the action request to stop
 {{< /admonition >}}
 
 ### Rulebook
@@ -145,21 +145,22 @@ Dans les cas plus classiques comme le webhook, il ne s'arrête pas sauf si on lu
 #### Sources
 
 {{< admonition note >}}
-Les sources correspondent aux différentes possibilités sur lequelles ansible-rulebook peut se déclencher.
+Sources : the multiple possibilities to listen to trigger something
 {{< /admonition >}}
 
-Chacune des sources suivantes est présente dans la collection ansible.eda, mais il est fort probable que cette liste grandisse prochainement:
-- alertmanager - recevoir un événement provenant d'alertmanager via un webhook
-- azure_service_bus - recevoir un événement depuis le service Azure
-- file - charger des facts depuis un fichier yaml et recharger en cas de changement dans le fichier yaml
-- kafka - recevoir un événement depuis un topic kafka
-- range - générer un événement avec une boucle qui incrémente i jusqu'a une limite (range en python)
-- tick - générer un événement avec une boucle infinie avec un i qui croit
-- url_check - requête une url et envoie un message selon leur status
-- watchdog - surveille un fichier et envoie un événement si il est modifié
-- webhook - fournit un webhook et attend de recevoir un evenement dessus
+You can find below, the sources inside the collection ansible.eda:
 
-Si on regarde rapidement le plugin de source range.py, on se rend compte qu'il est plutot simple:
+- alertmanager - receive events via a webhook from alertmanager
+- azure_service_bus - receive events from an Azure service
+- file - load facts from YAML files initially and reload when any file changes
+- kafka - receive events via a kafka topic
+- range - generate events with an increasing index i within a range
+- tick - generate events with an increasing index i that never ends
+- url_check - poll a set of URLs and send events with their statuses
+- watchdog - watch file system and send events when a file status changes
+- webhook - provide a webhook and receive events from it
+
+With a quick look on the range python script, it seems easy to create our own source.
 
 ```python
 """
@@ -216,28 +217,28 @@ condition: event.i == 1
 
 
 {{< admonition note >}}
-Les actions sont les taches à réaliser quand la ou les conditions sont réunies, la tache la plus courante est d'exectuer un playbook.
+Actions: Trigger what you need to happen should a condition be met. Some of the current actions are:
 {{< /admonition >}}
 
-Voici les actions possibles:
-- run_playbook - lance un playbook ansible en utilisant ansible-runner
-- set_fact - definit un fact
-- retract_fact - suprime un fact
-- post_event - envoie un nouvel evenement dans le moteur de règles
-- debug - affiche les evenements, les facts et les variables liées à cette action
-- print_event - afficher les données de l'evenement ciblé
-- noop - ne rien faire
-- shutdown - arreter ansible-rulebook
+Actions' list:
+- run_playbook - run a playbook using ansible-runner
+- set_fact - set a long term fact
+- retract_fact - remove a long term fact
+- post_event - send a new short term event to the rule engine
+- debug - print the current event and facts along with any variables and arguments to the action
+- print_event - print the data from the matching event
+- noop - do nothing
+- shutdown - shutdown the rule engine and terminate ansible-rulebook
+
+### Trigger from a webhook
+
+In this example:
+- source: ansible-rulebook listen for message on all ip and on the port 8000.
+- condition: if the  message is "Remediation1"
+- action: the playbook 'myplaybook' will be exexuted with ansible-playbook and ansible-runner
 
 
-### Déclenchement sur un webhook
-
-Dans cet exemple: 
-- La source: ansible-rulebook va attendre de recevoir un message sur le webhook (qui écoute sur toutes les ip de la machine et sur le port 8000).
-- La condition: si le message est "Remediation1"
-- L'action: le playbook 'myplaybook' sera executé via ansible-playbook et ansible-runner
-
-
+We use the rulebook below:
 ```yaml
 ---
 - name: Deploy Remediation
@@ -255,7 +256,7 @@ Dans cet exemple:
           name: myplaybook.yml
 ```
 
-Nous executons `ansible-rulebook`:
+We start `ansible-rulebook`:
 ```bash
 ❯ ansible-rulebook -i inventory.yml --rulebook rulebook.yml --verbose
 INFO:ansible_rulebook.app:Starting sources
@@ -268,12 +269,12 @@ INFO:ansible_rulebook.engine:Calling main in ansible.eda.webhook
 INFO:ansible_rulebook.engine:Waiting for event from Deploy Remediation
 ```
 
-Dans un autre terminal, nous requêtons le webhook.
+In another terminal, I request the webhook.
 ```bash
 ❯ curl -H 'Content-Type: application/json' -d '{"message": "Remediation1"}' 127.0.0.1:8000/webhook
 ```
 
-Nous voyons le playbook s'executer:
+And the playbook runs:
 ```bash
 ❯ ansible-rulebook -i inventory.yml --rulebook rulebook.yml --verbose
 INFO:ansible_rulebook.app:Starting sources
@@ -302,10 +303,10 @@ localhost                  : ok=2    changed=1    unreachable=0    failed=0    s
 
 ### Multiple sources
 
-Il est aussi possible de définir plusieurs sources simultanées:
+We can also define multiple sources:
 
 {{< admonition note >}}
-Si une des sources s'arrête, tout le rulebook s'arrete, ce qui est le cas dans notre exemple
+If one of the sources stop, all the rulebook stop
 {{< /admonition >}}
 
 ```yaml
@@ -334,11 +335,11 @@ Si une des sources s'arrête, tout le rulebook s'arrete, ce qui est le cas dans 
 
 ### Conclusion
 
-En conclusion, l'outil semble vraiment prometteur et les possiblités semblent incroyables, quelques idées en vrac:
-- Déclencher les playbook à distance quand il n'est pas possible d'executer ansible-playbook à travers ssh pour des raisons de sécurité
-- Déclencher ansible-playbook avec un message sur un canal mattermost/slack sur une plateforme de dev
-- Déclencher des playbook en chaine pour activer des services endormis pour économiser de l'energie.
+To Summerize, this tool seems really promising and the possibilities seems infinite:
+- Trigger a playbook from outside, when ssh is not reachable for security reason
+- Trigger a playbook based on message on slack/mattermost on dev platform
+- Trigger playbook to wake up applications, previously stop for energy saving
 
-Par contre, je vois quelques freins à l'adoption de ce produit:
-- Les dépendances dont java
-- L'outil est encore jeune, il faut souvent aller voir dans le code pour comprendre les options possibles.
+However, i am relunctant due to:
+- The dependencies: java
+- The tool is very recent and not mature, few contributors for the moment
