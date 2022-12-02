@@ -1,5 +1,5 @@
 prefix:
-  libFiles: https://blogtesting.thonis.fr/cdn/
+  libFiles: https://cdn.jsdelivr.net/npm/
   # simple-icons@7.3.0 https://github.com/simple-icons/simple-icons
   simpleIcons: https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/
 libFiles:

@@ -82,7 +82,7 @@ For further detail, see [Directory Structure](https://gohugo.io/getting-started/
 
 You can find a lots of theme for hugo in the [official site](https://themes.gohugo.io/)
 
-Choose on and put it in the theme directory.
+Choose one and put it in the theme directory.
 
 I choose [loveit theme](https://hugoloveit.com/) for its features:
 - Multi language 
@@ -145,18 +145,124 @@ Each time you modify your article, the website is reload
 
 ## Customize your theme
 
-
+Add options from loveit theme inside your config.toml
+```bash
+cat themes/loveit/config.toml >> config.toml
+```
 
 Modify the `config.toml` in order to customize your blog:
 - Website url (`baseURL`)
-- Website title (`params.title`)
+- Website title (`title` and `params.title` and `params.header.title.name` and `params.app.title`)
+- Avatar picture (`params.home.profile.avatarURL`)
+- Text below the avatar (`params.home.profile.subtitle`)
 - Website description (`params.description`)
+- ...
+
+You can also add this block in `config.toml` to add highlight:
+```toml
+# Markup related configuration in Hugo
+[markup]
+  # Syntax Highlighting (https://gohugo.io/content-management/syntax-highlighting)
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = true
+    # false is a necessary configuration (https://github.com/dillonzq/LoveIt/issues/158)
+    noClasses = false
+  # Goldmark is from Hugo 0.60 the default library used for Markdown
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
+    [markup.goldmark.renderer]
+      # whether to use HTML tags directly in the document
+      unsafe = true
+  # Table Of Contents settings
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 6
+```
 
 ## Tips and Tricks
 
 ### Multi Language
 
+For multilanguage support, you need:
+- define the language in config.toml
+```toml
+[languages]
+  [languages.en]
+    languageName = "English"
+    weight = 1
+    languageCode = "en"
+  [languages.fr]
+    languageName = "French"
+    weight = 2
+    languageCode = "fr"
+```
+
+- Create articles with the language code:
+  - index.en.md for english article
+  - index.fr.md for french article
+
+Automatically hugo will detect articles, for example If i create 3 articles in english and french and one article in english only.
+The result will be: 
+- 4 articles if the language selected is english
+- 3 articles if the language selected is french
+
 ### Schedule Article
 
-### Avoid Cross requests (GDPR ...)
+To schedule article, you need to define a publishDate in the future in the front matter:
+```md
+---
+title: "Ansible-rulebook, How to trigger ansible on events"
+date: 2022-10-26T11:24:09+02:00
+draft: false
+author: Jhanos
+publishDate: 2023-07-27
+---
+
+# My title
+
+My body
+```
+
+And in this case, when you generate your site with hugo, if the date is anterior to publishDate the article is not published
+
+{{< admonition note >}}
+I need to schedule hugo to take benefit of this feature (crontab, github actions, gitlab-ci ...)
+{{< /admonition >}}
+
+
+### Self sufficient (GDPR ...)
+
+If you prefer avoid cdn usage, you can download files used by this theme from cdn with this script):
+```bash
+# The two next lines are optionnal if you already have yq
+curl -o yq "https://github.com/mikefarah/yq/releases/download/v4.30.5/yq_linux_amd64"
+chmod u+x yq
+mkdir -p assets/data/cdn/
+cp theme/loveit/assets/data/cdn/jsdelivr.yml assets/data/cdn/jsdelivr.yml
+for file in $(./yq '.libFiles[]' assets/data/cdn/jsdelivr.yml ); do mkdir -p static/cdn/$(dirname $file); curl -Lo static/cdn/$file https://cdn.jsdelivr.net/npm/$file;done;
+cp -rp themes/loveit/static/lib/webfonts static/cdn/@fortawesome/fontawesome-free@6.1.1/
+```
+All dependencies are stored in static/cdn/ and your website is autonomous.
+
+You need to modify the value of `libFiles` by your website in `assets/data/cdn/jsdelivr.yml` :
+```yaml
+❯ cat assets/data/cdn/jsdelivr.yml
+prefix:
+  libFiles: https://www.thonis.fr/cdn/
+  # simple-icons@7.3.0 https://github.com/simple-icons/simple-icons
+  simpleIcons: https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/
+libFiles:
+  # fontawesome-free@6.1.1 https://fontawesome.com/
+  ...
+```
 
