@@ -158,7 +158,7 @@ Modify the `config.toml` in order to customize your blog:
 - Website description (`params.description`)
 - ...
 
-You can also add this block in `config.toml` to add highlight:
+You can also add this block in `config.toml` to add highlight and search:
 ```toml
 # Markup related configuration in Hugo
 [markup]
@@ -187,6 +187,13 @@ You can also add this block in `config.toml` to add highlight:
   [markup.tableOfContents]
     startLevel = 2
     endLevel = 6
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML", "MarkDown"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  taxonomyTerm = ["HTML"]
 ```
 
 ## Tips and Tricks
@@ -273,7 +280,7 @@ libFiles:
 
 ### Analytics
 
-Regarding the previous point, I disable any analytics and i use [goaccess](goaccess.io).  
+Regarding the previous point, I disable any analytics and i use [goaccess](https://goaccess.io).  
 This tool scan your webserver log and generate a report (html or cli), so the most simple usage is:
 ```bash
 # After this command, you only need to choose your log format
