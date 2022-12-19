@@ -271,3 +271,16 @@ libFiles:
   ...
 ```
 
+### Analytics
+
+Regarding the previous point, I disable any analytics and i use [goaccess](goaccess.io).  
+This tool scan your webserver log and generate a report (html or cli), so the most simple usage is:
+```bash
+# After this command, you only need to choose your log format
+goaccess /var/log/nginx/access.log
+``` 
+
+In my case, i want to filter on a specific domain, add geoIP and also to use compressed log so i use:
+```bash
+(cat /var/log/nginx/access.log /var/log/nginx/access.log.1 && zcat /var/log/nginx/access.log.*.gz) | grep "www.thonis.fr" | goaccess - --log-format=VCOMBINED -o /home/jhanos/public/report.html --geoip-database=/home/jhanos/GeoLite2-Country.mmdb --anonymize-ip
+``` 
