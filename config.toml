@@ -359,7 +359,7 @@ enableEmoji = true
       Mix = false
     # Comment config
     [params.page.comment]
-      enable = false
+      enable = true
       # Disqus comment config (https://disqus.com/)
       [params.page.comment.disqus]
         enable = false
@@ -417,9 +417,9 @@ enableEmoji = true
         enable = false
       # utterances comment config (https://utteranc.es/)
       [params.page.comment.utterances]
-        enable = false
+        enable = true
         # owner/repo
-        repo = ""
+        repo = "jhanos/blog"
         issueTerm = "pathname"
         label = ""
         lightTheme = "github-light"
@@ -573,3 +573,10 @@ enableEmoji = true
     languageName = "French"
     weight = 2
     languageCode = "fr"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML", "MarkDown"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  taxonomyTerm = ["HTML"]
