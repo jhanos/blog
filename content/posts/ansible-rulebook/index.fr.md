@@ -3,7 +3,7 @@ title: "Ansible-rulebook, comment déclencher ansible sur des événements"
 date: 2022-10-26T11:24:09+02:00
 draft: false
 author: Jhanos
-featuredImage: ansible.png
+featuredImage: ansible.webp
 publishDate: 2022-10-27
 categories:
 - Automation

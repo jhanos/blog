@@ -3,7 +3,7 @@ title: "Create your blog With Hugo"
 date: 2022-12-02
 draft: false
 author: Jhanos
-featuredImage: hugo.png
+featuredImage: hugo.webp
 #publishDate: 2022-10-27
 categories:
 - Writing

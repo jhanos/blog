@@ -3,7 +3,7 @@ title: "Ansible-rulebook, How to trigger ansible on events"
 date: 2022-10-26T11:24:09+02:00
 draft: false
 author: Jhanos
-featuredImage: ansible.png
+featuredImage: ansible.webp
 publishDate: 2022-10-27
 categories:
 - Automation
