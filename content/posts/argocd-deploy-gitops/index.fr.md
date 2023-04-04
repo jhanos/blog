@@ -21,8 +21,8 @@ L'intérêt du gitops par rapport au déploiement pipeline classique, c'est qu'i
 {{< /admonition >}}
 
 Prenons quelques exemples concrets de son utilisation :
-- Si je fais un changement manuel sur mon environnement de prod, argocd va afficher les déviations et vous proposer de les corriger.
-- Si je veux déployer une nouvelle version de mon application, je modifie mon référentiel (git par exemple) et je demande à ArgoCD de déployer ma nouvelle version.
+- Si je fais un changement manuel sur mon environnement de prod, argocd va afficher les déviations et me propose de les corriger.
+- Si je veux déployer une nouvelle version de mon application, je modifie mon référentiel (git par exemple) et ArgoCD me propose de déployer ma nouvelle version.
 - Je me rends compte que la nouvelle version comporte un bug, je peux revenir à une version précédente facilement via l'interface.
 
 Ce type d'outil fonctionne à merveille avec un outil comme [renovate](https://github.com/renovatebot/renovate) qui va mettre automatique à jour vos repository git.
@@ -116,6 +116,7 @@ Voici quelques captures d'écran :
 - **Notification:** ArgoCD implémente un moyen de notifier l'utilisateur en cas de changement via Stack, Teams, Mail, ...
 - **Fenetre de synchro:** Il est possible de dire à argoCD de ne faire de mise à jour que sur des créneaux horaires précis (durant les heures de boulot par exemple)
 - **Exclusion:** Il est possible d'exclure une partie des descripteurs yaml de l'application, si elle contient des données aléatoires ou si un autre processus la modifie par exemple.
+- **Image Updater**: Si vous ne voulez pas utiliser d'outil comme renovate, il est possible d'utiliser [ArgoCD Image Updater](https://argocd-image-updater.readthedocs.io/en/stable/)
 
 ### Quelques inconvénients
 
