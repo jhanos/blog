@@ -1,10 +1,10 @@
 ---
 title: "Déployer dans Kubernetes en mode GitOps"
 date: 2022-12-21
-draft: true
+draft: false
 author: Jhanos
 featuredImage: argo.webp
-publishDate: 2022-12-21
+publishDate: 2023-04-05
 lang: fr
 ---
 
