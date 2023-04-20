@@ -3,7 +3,7 @@ title: "Kubecon Europe 2023"
 date: 2023-04-19T11:24:09+02:00
 draft: false
 author: Jhanos
-featuredImage:
+featuredImage: kubeconlogo.webp
 publishDate: 2023-04-19
 
 ---
