@@ -1,6 +1,6 @@
 ---
 title: Upgrade your shell
-date: 2023-12-19
+date: 2024-01-02
 ---
 
 ## TLDR
