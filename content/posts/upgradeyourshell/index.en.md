@@ -1,5 +1,6 @@
 ---
 title: Upgrade your shell
+author: Jhanos
 date: 2024-01-02
 ---
 
