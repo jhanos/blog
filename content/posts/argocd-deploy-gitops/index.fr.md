@@ -5,7 +5,6 @@ draft: false
 author: Jhanos
 featuredImage: argo.webp
 publishDate: 2023-04-05
-lang: fr
 ---
 
 # ArgoCD
