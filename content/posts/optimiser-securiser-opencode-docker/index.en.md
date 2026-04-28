@@ -2,7 +2,7 @@
 title: "Optimizing and Securing OpenCode with Docker and greyproxy"
 date: 2026-04-27T10:00:00+02:00
 publishDate: 2026-04-27
-draft: true
+draft: false
 author: Jhanos
 featuredImage: cover.webp
 categories:
